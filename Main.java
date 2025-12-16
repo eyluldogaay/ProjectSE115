@@ -9,16 +9,39 @@ public class Main {
     static String[] commodities = {"Gold", "Oil", "Silver", "Wheat", "Copper"};
     static String[] months = {"January","February","March","April","May","June",
                               "July","August","September","October","November","December"};
-    
 
+    static int[][][] data = new int[MONTHS][DAYS][COMMS];// ı used for data storage
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
     public static void loadData() {
     }
 
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
-    public static String mostProfitableCommodityInMonth(int month) {
-        return "DUMMY"; 
+    public static String mostProfitableCommodityInMonth(int month) {  // ı wanted to find the most profitable commodity in the given month and calculate its profit
+        if (month < 0 || month >= MONTHS) {
+            return "INVALID_MONTH";
+        }
+
+        int maxProfit = Integer.MIN_VALUE;//-2147483648    smallest
+
+        int maxCommodityIndex = -1;
+
+        for (int c = 0; c < COMMS; c++) {
+
+            int totalProfit = 0;
+
+            for (int d = 0; d < DAYS; d++) { //add  the profits for all days of the selected month
+                totalProfit += data[month][d][c];
+            }
+
+            if (totalProfit > maxProfit) { //make comparison which value is greater
+                maxProfit = totalProfit;
+                maxCommodityIndex = c;
+            }
+        }
+
+        return commodities[maxCommodityIndex] + " " + maxProfit;
+
     }
 
     public static int totalProfitOnDay(int month, int day) {
