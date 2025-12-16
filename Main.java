@@ -44,8 +44,18 @@ public class Main {
 
     }
 
-    public static int totalProfitOnDay(int month, int day) {
-        return 1234;
+    public static int totalProfitOnDay(int month, int day) {  // find total profit given day and month
+        if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) {
+            return -99999;
+        }
+        int d = day - 1; // convert the day array format
+
+        int totalProfit = 0;
+
+        for (int c = 0; c < COMMS; c++) {
+            totalProfit += data[month][d][c]; // sum all comms this day and this month
+        }
+        return totalProfit;
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
