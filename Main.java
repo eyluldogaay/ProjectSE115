@@ -149,8 +149,37 @@ public class Main {
         return months[bestMonthIndex];
     }
 
-    public static int consecutiveLossDays(String comm) { 
-        return 1234; 
+    public static int consecutiveLossDays(String comm) {  //returns the longest consecutive streak of negative profit days for the given commodity across the whole year
+
+        int commIndex = -1;  //find commodity index
+        for (int c = 0; c < COMMS; c++) {
+            if (commodities[c].equals(comm)) {
+                commIndex = c;
+                break;
+            }
+        }
+        if (commIndex == -1) {
+            return -1;
+        }
+
+        int currentStreak = 0;
+        int maxStreak = 0;
+
+        for (int m = 0; m < MONTHS; m++) {
+            for (int d = 0; d < DAYS; d++) {   //all years
+                int profit = data[m][d][commIndex];
+
+                if (profit < 0) {
+                    currentStreak++; //increase streak
+                    if (currentStreak > maxStreak) {
+                        maxStreak = currentStreak; //update maximum streak
+                    }
+                } else {
+                    currentStreak = 0; // reset streak because positive profit
+                }
+            }
+        }
+        return maxStreak;
     }
     
     public static int daysAboveThreshold(String comm, int threshold) { 
