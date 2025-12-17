@@ -58,8 +58,35 @@ public class Main {
         return totalProfit;
     }
 
-    public static int commodityProfitInRange(String commodity, int from, int to) {
-        return 1234;
+    public static int commodityProfitInRange(String commodity, int from, int to) { //find total profit given commodity for all months day ranges
+
+        if (from < 1 || from > DAYS || to < 1 || to > DAYS || from > to) {
+            return -99999;
+        }
+
+        int commIndex = -1;//find commodity index
+        for (int c = 0; c < COMMS; c++) {
+            if (commodities[c].equals(commodity)) {
+                commIndex = c;
+                break;
+            }
+        }
+
+        if (commIndex == -1) {
+            return -99999;
+        }
+
+        int totalProfit = 0;
+
+        for (int m = 0; m < MONTHS; m++) {      //for all month
+
+            for (int d = from - 1; d <= to - 1; d++) { // days convert index version
+                totalProfit += data[m][d][commIndex];
+            }
+        }
+
+        return totalProfit;
+
     }
 
     public static int bestDayOfMonth(int month) { 
