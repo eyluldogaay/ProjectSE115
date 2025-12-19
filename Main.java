@@ -210,8 +210,35 @@ public class Main {
 
     }
 
-    public static int biggestDailySwing(int month) { 
-        return 1234; 
+    public static int biggestDailySwing(int month) {  //finds the largest profit change between consecutive days
+        if (month < 0 || month >= MONTHS) {
+            return -99999;
+        }
+
+        int maxSwing = 0;
+
+        int previousDayTotal = 0;
+        for (int c = 0; c < COMMS; c++) {
+            previousDayTotal += data[month][0][c];  //find total profit first day(today)
+        }
+
+        for (int day = 1; day < DAYS; day++) {
+            int currentDayTotal = 0;
+            for (int c = 0; c < COMMS; c++) {       // find total profit second day(tomorrow)
+                currentDayTotal += data[month][day][c];
+            }
+
+            int swing = currentDayTotal - previousDayTotal;
+            if (swing < 0) swing = -swing;  //absolute control
+
+            if (swing > maxSwing) {
+                maxSwing = swing;
+            }
+
+            previousDayTotal = currentDayTotal; //tomorrow become today
+        }
+
+        return maxSwing;
     }
     
     public static String compareTwoCommodities(String c1, String c2) { 
