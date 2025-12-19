@@ -8,7 +8,7 @@ public class Main {
     static final int COMMS = 5;
     static String[] commodities = {"Gold", "Oil", "Silver", "Wheat", "Copper"};
     static String[] months = {"January","February","March","April","May","June",
-                              "July","August","September","October","November","December"};
+            "July","August","September","October","November","December"};
 
     static int[][][] data = new int[MONTHS][DAYS][COMMS];// ı used for data storage
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
@@ -22,15 +22,18 @@ public class Main {
             return "INVALID_MONTH";
         }
 
-        int maxProfit = Integer.MIN_VALUE;//-2147483648    smallest
+        int maxProfit = 0;                   //store total profit of the first commodity
+        for (int d = 0; d < DAYS; d++) {
+            maxProfit += data[month][d][0]; //for initial commodity Gold
+        }
 
-        int maxCommodityIndex = -1;
+        int maxCommodityIndex = 0; //assume the first commodity is maximum
 
-        for (int c = 0; c < COMMS; c++) {
+        for (int c = 1; c < COMMS; c++) {  //remaining commodities
 
             int totalProfit = 0;
 
-            for (int d = 0; d < DAYS; d++) { //add  the profits for all days of the selected month
+            for (int d = 0; d < DAYS; d++) {
                 totalProfit += data[month][d][c];
             }
 
@@ -43,6 +46,8 @@ public class Main {
         return commodities[maxCommodityIndex] + " " + maxProfit;
 
     }
+
+
 
     public static int totalProfitOnDay(int month, int day) {  // find total profit given day and month
         if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) {
@@ -89,31 +94,34 @@ public class Main {
 
     }
 
-    public static int bestDayOfMonth(int month) { //find best day of given month according to profit
+    public static int bestDayOfMonth(int month) { //find the best day of given month according to profit
         if (month < 0 || month >= MONTHS) {
             return -1;
         }
-        int bestDay = 1;
-        int maxProfit = Integer.MIN_VALUE; //-2147483648 smallest
 
-        for (int d = 0; d < DAYS; d++) { //Days 0 to 27
+        int bestDay = 1;  //assume day1 is the best day initially
 
+        int maxProfit = 0;
+        for (int c = 0; c < COMMS; c++) {  // calculate day1 profit
+            maxProfit += data[month][0][c];
+        }
+
+        for (int d = 1; d < DAYS; d++) { //check remaining days
             int dayTotal = 0;
-
             for (int c = 0; c < COMMS; c++) {
-                dayTotal += data[month][d][c];  //sum all comms that day
+                dayTotal += data[month][d][c]; // sum profits of all commodities for that day
             }
 
-            if (dayTotal > maxProfit) {  //make comparison which value is greater
+            if (dayTotal > maxProfit) {
                 maxProfit = dayTotal;
-                bestDay = d + 1;   // covert days 0 to 27  from 1 to 28
+                bestDay = d + 1; // convert index to day number
             }
         }
 
         return bestDay;
 
     }
-    
+
     public static String bestMonthForCommodity(String comm) { //find which month is the most profit for given commodity
 
         int commIndex = -1;  //find commodity index
@@ -128,11 +136,13 @@ public class Main {
             return "INVALID_COMMODITY";
         }
 
-        int bestMonthIndex = 0;
-        int maxProfit = Integer.MIN_VALUE; //-2147483648    smallest
+        int bestMonthIndex = 0;  //assume first month is the best
+        int maxProfit = 0;
+        for (int d = 0; d < DAYS; d++) {
+            maxProfit += data[0][d][commIndex];
+        }
 
-
-        for (int m = 0; m < MONTHS; m++) {
+        for (int m = 1; m < MONTHS; m++) {
 
             int monthTotal = 0;
 
@@ -181,7 +191,7 @@ public class Main {
         }
         return maxStreak;
     }
-    
+
     public static int daysAboveThreshold(String comm, int threshold) { // find the number of days when the profit is above the given threshold
 
         int commIndex = -1;    //find commodity index
@@ -240,7 +250,7 @@ public class Main {
 
         return maxSwing;
     }
-    
+
     public static String compareTwoCommodities(String c1, String c2) {
         int index1 = -1;
         int index2 = -1;
@@ -278,7 +288,7 @@ public class Main {
         }
 
     }
-    
+
     public static String bestWeekOfMonth(int month) { //find the most profitable week of the given month
         if (month < 0 || month >= MONTHS) {
             return "INVALID_MONTH";
