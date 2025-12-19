@@ -182,8 +182,32 @@ public class Main {
         return maxStreak;
     }
     
-    public static int daysAboveThreshold(String comm, int threshold) { 
-        return 1234; 
+    public static int daysAboveThreshold(String comm, int threshold) { // find the number of days when the profit is above the given threshold
+
+        int commIndex = -1;    //find commodity index
+        for (int c = 0; c < COMMS; c++) {
+            if (commodities[c].equals(comm)) {
+                commIndex = c;
+                break;
+            }
+        }
+
+        if (commIndex == -1) {
+            return -1;
+        }
+
+        int count = 0;
+
+        for (int m = 0; m < MONTHS; m++) {    // each month each day = all year
+            for (int d = 0; d < DAYS; d++) {
+                if (data[m][d][commIndex] > threshold) {   //control profit greather than threshold
+                    count++;                               // increase count
+                }
+            }
+        }
+
+        return count;
+
     }
 
     public static int biggestDailySwing(int month) { 
