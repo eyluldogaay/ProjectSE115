@@ -28,7 +28,6 @@ public class Main {
 
             try {
                 File file = new File(fileName);  //file object
-                if (!file.exists()) continue;    //does not exist skip
 
                 fileScanner = new Scanner(file);
 
@@ -311,14 +310,18 @@ public class Main {
 
     public static String compareTwoCommodities(String c1, String c2) {
         int index1 = -1;
-        int index2 = -1;
-
-        for (int c = 0; c < COMMS; c++) {   // find commodity index
+        for (int c = 0; c < COMMS; c++) {
             if (commodities[c].equals(c1)) {
                 index1 = c;
+                break;
             }
+        }
+
+        int index2 = -1;
+        for (int c = 0; c < COMMS; c++) {
             if (commodities[c].equals(c2)) {
                 index2 = c;
+                break;
             }
         }
 
