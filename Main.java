@@ -12,7 +12,65 @@ public class Main {
 
     static int[][][] data = new int[MONTHS][DAYS][COMMS];// ı used for data storage
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
-    public static void loadData() {
+    public static void loadData() {  //clear the array
+        for (int m = 0; m < MONTHS; m++) {
+            for (int d = 0; d < DAYS; d++) {
+                for (int c = 0; c < COMMS; c++) {
+                    data[m][d][c] = 0;
+                }
+            }
+        }
+
+        for (int m = 0; m < MONTHS; m++) {
+
+            String fileName = "Data_Files/" + months[m] + ".txt";
+            Scanner fileScanner = null; //for finally
+
+            try {
+                File file = new File(fileName);  //file object
+                if (!file.exists()) continue;    //does not exist skip
+
+                fileScanner = new Scanner(file);
+
+                if (fileScanner.hasNextLine()) { //skip header line
+                    fileScanner.nextLine();
+                }
+
+                while (fileScanner.hasNextLine()) { //read file line
+                    String line = fileScanner.nextLine();
+                    if (line.trim().isEmpty()) continue; //skip empty lines
+
+                    String[] parts = line.split(",");//split comma
+                    if (parts.length != 3) continue;
+
+                    int day = Integer.parseInt(parts[0].trim()) - 1; //convert 1-28 to 0-27 int
+                    String commodity = parts[1].trim();
+                    int profit = Integer.parseInt(parts[2].trim()); //string to int
+
+                    if (day < 0 || day >= DAYS) continue;
+
+                    int commIndex = -1;
+                    for (int c = 0; c < COMMS; c++) {
+                        if (commodities[c].equals(commodity)) {
+                            commIndex = c;
+                            break;
+                        }
+                    }
+
+                    if (commIndex != -1) {
+                        data[m][day][commIndex] = profit; //store profit in array
+                    }
+                }
+
+            } catch (Exception e) {
+                //reading or parsing errors are ignored
+
+            } finally {
+                if (fileScanner != null) { //close scanner
+                    fileScanner.close();
+                }
+            }
+        }
     }
 
     // ======== 10 REQUIRED METHODS (Students fill these) ========
